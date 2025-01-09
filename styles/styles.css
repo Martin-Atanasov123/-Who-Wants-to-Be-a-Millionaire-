@@ -11,6 +11,7 @@ body {
 
 .header {
     text-align: center;
+    font-size: x-large;
     padding: 20px;
     background-color: #000066;
 }
@@ -42,7 +43,7 @@ body {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
     gap: 10px;
-    width: 80%;
+    width: 70%;
 }
 
 .option {
@@ -81,7 +82,7 @@ body {
 
 .prize-level {
     padding: 5px 10px;
-    border-radius: 5px;
+    border-radius: 25px;
 }
 
 .prize-level.current {
