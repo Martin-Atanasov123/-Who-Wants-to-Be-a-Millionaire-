@@ -1,0 +1,12 @@
+[
+    {
+        "question": "What is the capital of France?",
+        "answers": ["Paris", "Berlin", "Madrid", "Rome"],
+        "correct": 0
+    },
+    {
+        "question": "Which planet is closest to the Sun?",
+        "answers": ["Mercury", "Venus", "Mars", "Earth"],
+        "correct": 0
+    }
+]

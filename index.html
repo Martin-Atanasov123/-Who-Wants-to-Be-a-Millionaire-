@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -210,4 +210,37 @@
         loadQuestion();
     </script>
 </body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to Be a Millionaire</title>
+    <link rel="stylesheet" href="styles/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="question-container">
+            <h1 id="question">Loading...</h1>
+            <div id="answers">
+                <button class="answer" id="answer1"></button>
+                <button class="answer" id="answer2"></button>
+                <button class="answer" id="answer3"></button>
+                <button class="answer" id="answer4"></button>
+            </div>
+        </div>
+        <div class="lifelines">
+            <button id="fiftyFifty">50:50</button>
+            <button id="switchQuestion">Switch Question</button>
+        </div>
+        <div class="score">
+            <p id="score">Score: 0</p>
+        </div>
+    </div>
+    <script src="scripts/questions.js"></script>
+    <script src="scripts/game.js"></script>
+</body>
 </html>
+

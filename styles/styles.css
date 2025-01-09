@@ -1,0 +1,45 @@
+body {
+    font-family: Arial, sans-serif;
+    background-color: #000;
+    color: #fff;
+    text-align: center;
+}
+
+.game-container {
+    margin: 50px auto;
+    width: 80%;
+    max-width: 600px;
+}
+
+.question-container {
+    margin-bottom: 20px;
+}
+
+.answer {
+    display: block;
+    margin: 10px auto;
+    padding: 10px;
+    width: 80%;
+    background-color: #1a73e8;
+    border: none;
+    color: white;
+    font-size: 1.2em;
+    cursor: pointer;
+}
+
+.answer:hover {
+    background-color: #155ab4;
+}
+
+.lifelines button {
+    margin: 10px;
+    padding: 10px;
+    background-color: #444;
+    color: #fff;
+    border: none;
+    cursor: pointer;
+}
+
+.lifelines button:hover {
+    background-color: #666;
+}
