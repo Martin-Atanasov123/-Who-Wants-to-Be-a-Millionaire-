@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Who Wants to Answer It All?</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background-color: #001f3f;
+            color: #fff;
+            text-align: center;
+        }
+        header {
+            background: #001a33;
+            padding: 20px 0;
+        }
+        header h1 {
+            font-size: 2.5rem;
+            color: #FFD700;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            padding: 20px;
+            background: #003366;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.5);
+        }
+        .question {
+            font-size: 1.5rem;
+            margin: 20px 0;
+        }
+        .options {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .options button {
+            padding: 10px;
+            font-size: 1.2rem;
+            background: #00509e;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .options button:hover {
+            background: #0066cc;
+        }
+        .lifelines {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        .lifelines button {
+            padding: 10px;
+            font-size: 1rem;
+            background: #ffaa00;
+            color: #000;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .lifelines button:disabled {
+            background: #555;
+            cursor: not-allowed;
+        }
+        footer {
+            margin-top: 20px;
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Who Wants to Answer It All?</h1>
+    </header>
+    <div class="container">
+        <div id="game">
+            <div class="question" id="question">Loading question...</div>
+            <div class="options" id="options"></div>
+            <div class="lifelines">
+                <button id="lifeline5050">50:50</button>
+                <button id="lifelineAudience">Ask the Audience</button>
+                <button id="lifelineSwitch">Switch the Question</button>
+            </div>
+        </div>
+    </div>
+    <footer>
+        &copy; 2025 Ocean Odyssey Survey Game
+    </footer>
+
+    <script>
+        const questions = [
+            { question: "What's your favorite color?", options: ["Red", "Blue", "Green", "Yellow"] },
+            { question: "What do you do in your free time?", options: ["Read books", "Play sports", "Watch movies", "Other"] },
+            { question: "How often do you use social media?", options: ["Daily", "Weekly", "Monthly", "Rarely"] }
+        ];
+
+        let currentQuestion = 0;
+        const lifelinesUsed = { fiftyFifty: false, audience: false, switch: false };
+
+        const questionEl = document.getElementById("question");
+        const optionsEl = document.getElementById("options");
+
+        function loadQuestion() {
+            const { question, options } = questions[currentQuestion];
+            questionEl.textContent = question;
+
+            optionsEl.innerHTML = "";
+            options.forEach((option, index) => {
+                const button = document.createElement("button");
+                button.textContent = option;
+                button.onclick = () => handleAnswer(index);
+                optionsEl.appendChild(button);
+            });
+        }
+
+        function handleAnswer(index) {
+            alert(`You selected: ${questions[currentQuestion].options[index]}`);
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                loadQuestion();
+            } else {
+                questionEl.textContent = "Congratulations! You've completed the survey!";
+                optionsEl.innerHTML = "";
+                document.querySelector(".lifelines").style.display = "none";
+            }
+        }
+
+        document.getElementById("lifeline5050").onclick = () => {
+            if (lifelinesUsed.fiftyFifty) return;
+            lifelinesUsed.fiftyFifty = true;
+
+            const options = Array.from(optionsEl.children);
+            let hidden = 0;
+            while (hidden < 2) {
+                const randomIndex = Math.floor(Math.random() * options.length);
+                const button = options[randomIndex];
+
+                if (!button.textContent || button.style.display === "none") continue;
+                button.style.display = "none";
+                hidden++;
+            }
+        };
+
+        document.getElementById("lifelineAudience").onclick = () => {
+            if (lifelinesUsed.audience) return;
+            lifelinesUsed.audience = true;
+            alert("Audience says: Option 1 is most popular!");
+        };
+
+        document.getElementById("lifelineSwitch").onclick = () => {
+            if (lifelinesUsed.switch) return;
+            lifelinesUsed.switch = true;
+            currentQuestion = (currentQuestion + 1) % questions.length;
+            loadQuestion();
+        };
+
+        loadQuestion();
+    </script>
+</body>
+</html>
