@@ -3,244 +3,617 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Who Wants to Be a Millionaire?</title>
+    <title>Quiz Game</title>
     <style>
+       
         body {
+            margin: 0;
+            padding: 0;
             font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #000;
-            color: #fff;
-            text-align: center;
-            overflow: hidden;
-        }
-        header {
-            background: linear-gradient(to right, #001a33, #003366);
-            padding: 20px 0;
-        }
-        header h1 {
-            font-size: 3rem;
-            color: #FFD700;
-            margin: 0;
-        }
-        .container {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 20px;
-            background: #001a33;
-            border-radius: 10px;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
-            position: relative;
-        }
-        .question {
-            font-size: 1.8rem;
-            margin: 20px 0;
-        }
-        .options {
+            background-color: #000033;
+            color: white;
+            height: 100vh;
             display: flex;
             flex-direction: column;
-            gap: 15px;
         }
-        .options button {
-            padding: 15px;
-            font-size: 1.2rem;
-            background: #00509e;
-            color: #fff;
-            border: none;
-            border-radius: 10px;
-            cursor: pointer;
-            transition: transform 0.2s, background 0.3s;
+
+        .header {
+            text-align: center;
+            padding: 20px;
+            background-color: #000066;
         }
-        .options button:hover {
-            background: #0066cc;
-            transform: scale(1.05);
-        }
-        .options button.correct {
-            background: #28a745;
-        }
-        .options button.incorrect {
-            background: #dc3545;
-        }
-        .lifelines {
+
+        .game-container {
             display: flex;
-            justify-content: space-around;
-            margin: 20px 0;
+            flex: 1;
         }
-        .lifelines button {
+
+        .main-game {
+            flex: 3;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .question-box {
+            background-color: #000066;
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            width: 80%;
+            text-align: center;
+        }
+
+        .options-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            width: 80%;
+        }
+
+        .option {
+            background-color: #000066;
             padding: 10px;
-            font-size: 1rem;
-            background: #ffaa00;
-            color: #000;
-            border: none;
+            border: 2px solid #4444ff;
             border-radius: 5px;
             cursor: pointer;
+            transition: background-color 0.3s;
         }
-        .lifelines button:disabled {
-            background: #555;
+
+        .option:hover {
+            background-color: #0000aa;
+        }
+
+        .option.selected {
+            background-color: #ffaa00;
+        }
+
+        .option.correct {
+            background-color: #00aa00;
+        }
+
+        .option.wrong {
+            background-color: #aa0000;
+        }
+
+        .money-ladder {
+            flex: 1;
+            background-color: #000066;
+            padding: 20px;
+            display: flex;
+            flex-direction: column-reverse;
+            gap: 5px;
+        }
+
+        .prize-level {
+            padding: 5px 10px;
+            border-radius: 5px;
+        }
+
+        .prize-level.current {
+            background-color: #ffaa00;
+            color: black;
+        }
+
+        .prize-level.safe {
+            background-color: #444444;
+        }
+
+        .controls {
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        .submit-btn {
+            background-color: #ffaa00;
+            color: black;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .submit-btn:disabled {
+            background-color: #666666;
             cursor: not-allowed;
         }
-        .progress {
-            margin: 20px 0;
-            color: #FFD700;
-            font-size: 1.5rem;
-        }
-        footer {
+
+        #message {
             margin-top: 20px;
-            font-size: 0.9rem;
-            color: #ccc;
+            font-size: 20px;
+            color: #ffaa00;
         }
     </style>
 </head>
 <body>
-    <header>
+    <div class="header">
         <h1>Who Wants to Be a Millionaire?</h1>
-    </header>
-    <div class="container">
-        <div id="game">
-            <div class="progress" id="progress">Question 1 of 15</div>
-            <div class="question" id="question">Loading question...</div>
-            <div class="options" id="options"></div>
-            <div class="lifelines">
-                <button id="lifeline5050">50:50</button>
-                <button id="lifelineAudience">Ask the Audience</button>
-                <button id="lifelineSwitch">Switch the Question</button>
+    </div>
+    <div class="game-container">
+        <div class="main-game">
+            <div class="question-box">
+                <h2 id="question">Ready to start?</h2>
             </div>
+            <div class="options-container" id="options">
+                
+            </div>
+            <div class="controls">
+                <button id="submit-btn" class="submit-btn" disabled>Submit Answer</button>
+            </div>
+            <div id="message"></div>
+        </div>
+        <div class="money-ladder" id="money-ladder">
+            
         </div>
     </div>
-    <footer>
-        &copy; 2025 Who Wants to Be a Millionaire?
-    </footer>
 
     <script>
-        const questions = [
-            { 
-                question: "What is the capital of France?", 
-                options: ["Berlin", "Madrid", "Paris", "Rome"], 
-                correct: 2
-            },
-            { 
-                question: "Which planet is known as the Red Planet?", 
-                options: ["Earth", "Mars", "Jupiter", "Venus"], 
-                correct: 1
-            },
-            { 
-                question: "Who wrote 'To Kill a Mockingbird'?", 
-                options: ["Harper Lee", "J.K. Rowling", "Jane Austen", "Mark Twain"], 
-                correct: 0
+        
+        const questionDatabase = {
+            easy: [
+                {
+                    question: "What is the largest planet in our solar system?",
+                    options: ["Mars", "Jupiter", "Saturn", "Neptune"],
+                    correct: 1
+                },
+                {
+                    question: "Which element has the chemical symbol 'Au'?",
+                    options: ["Silver", "Aluminum", "Gold", "Copper"],
+                    correct: 2
+                },
+                {
+                    question: "What is the capital of France?",
+                    options: ["London", "Berlin", "Paris", "Madrid"],
+                    correct: 2
+                },
+                {
+                    question: "How many continents are there?",
+                    options: ["5", "6", "7", "8"],
+                    correct: 2
+                },
+                {
+                    question: "Which planet is closest to the Sun?",
+                    options: ["Venus", "Earth", "Mars", "Mercury"],
+                    correct: 3
+                },
+                {
+                    question: "What is the largest mammal in the world?",
+                    options: ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
+                    correct: 1
+                },
+                {
+                    question: "Which gas do plants absorb from the air?",
+                    options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
+                    correct: 1
+                }
+            ],
+            medium: [
+                {
+                    question: "Who painted the Mona Lisa?",
+                    options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+                    correct: 1
+                },
+                {
+                    question: "What is the speed of light (approximate)?",
+                    options: ["86,000 mps", "186,000 mps", "286,000 mps", "386,000 mps"],
+                    correct: 1
+                },
+                {
+                    question: "Which element is most abundant in Earth's atmosphere?",
+                    options: ["Oxygen", "Carbon", "Nitrogen", "Hydrogen"],
+                    correct: 2
+                },
+                {
+                    question: "What is the capital of Australia?",
+                    options: ["Sydney", "Melbourne", "Canberra", "Perth"],
+                    correct: 2
+                },
+                {
+                    question: "In which year did World War I begin?",
+                    options: ["1913", "1914", "1915", "1916"],
+                    correct: 1
+                },
+                {
+                    question: "What is the chemical formula for water?",
+                    options: ["CO2", "H2O", "NaCl", "O2"],
+                    correct: 1
+                }
+            ],
+            hard: [
+                {
+                    question: "What is the smallest bone in the human body?",
+                    options: ["Stapes", "Femur", "Radius", "Tibia"],
+                    correct: 0
+                },
+                {
+                    question: "What is the atomic number of Gold?",
+                    options: ["77", "79", "81", "83"],
+                    correct: 1
+                },
+                {
+                    question: "Who wrote 'War and Peace'?",
+                    options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Anton Chekhov", "Ivan Turgenev"],
+                    correct: 1
+                },
+                {
+                    question: "What is the square root of 841?",
+                    options: ["27", "29", "31", "33"],
+                    correct: 1
+                },
+                {
+                    question: "Which year was the first Moon landing?",
+                    options: ["1967", "1968", "1969", "1970"],
+                    correct: 2
+                }
+            ],
+            expert: [
+                {
+                    question: "What is the deepest point in the ocean?",
+                    options: ["Mariana Trench", "Tonga Trench", "Philippine Trench", "Puerto Rico Trench"],
+                    correct: 0
+                },
+                {
+                    question: "Who discovered penicillin?",
+                    options: ["Louis Pasteur", "Alexander Fleming", "Robert Koch", "Joseph Lister"],
+                    correct: 1
+                },
+                {
+                    question: "What is the most abundant element in the universe?",
+                    options: ["Helium", "Hydrogen", "Oxygen", "Carbon"],
+                    correct: 1
+                },
+                {
+                    question: "In quantum physics, what is the name of the principle that states you cannot simultaneously know the position and momentum of a particle?",
+                    options: ["Pauli Exclusion", "Heisenberg Uncertainty", "Wave-Particle Duality", "Quantum Entanglement"],
+                    correct: 1
+                }
+            ]
+        };
+
+        const prizeLevels = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
+
+        class QuizGame {
+            constructor() {
+                this.currentQuestion = 0;
+                this.totalPrize = 0;
+                this.safePrize = 0;
+                this.selectedOption = null;
+                this.questions = this.generateQuestions();
+                this.initializeGame();
             }
-            // Add more questions here up to 15.
-        ];
 
-        let currentQuestionIndex = 0;
-        let lifelinesUsed = { fiftyFifty: false, audience: false, switch: false };
+            generateQuestions() {
+                const questions = [];
+                
+                 Select 5 easy questions
+                const easyQuestions = this.shuffleArray([...questionDatabase.easy]).slice(0, 5);
+                 Select 5 medium questions
+                const mediumQuestions = this.shuffleArray([...questionDatabase.medium]).slice(0, 5);
+                Select 3 hard questions
+                const hardQuestions = this.shuffleArray([...questionDatabase.hard]).slice(0, 3);
+                Select 2 expert questions
+                const expertQuestions = this.shuffleArray([...questionDatabase.expert]).slice(0, 2);
 
-        const questionEl = document.getElementById("question");
-        const optionsEl = document.getElementById("options");
-        const progressEl = document.getElementById("progress");
+                 Combine all questions and add prize levels
+                return [...easyQuestions, ...mediumQuestions, ...hardQuestions, ...expertQuestions]
+                    .map((q, index) => ({
+                        ...q,
+                        prize: prizeLevels[index]
+                    }));
+            }
 
-        function loadQuestion() {
-            const { question, options } = questions[currentQuestionIndex];
-            progressEl.textContent = `Question ${currentQuestionIndex + 1} of ${questions.length}`;
-            questionEl.textContent = question;
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
 
-            optionsEl.innerHTML = "";
-            options.forEach((option, index) => {
-                const button = document.createElement("button");
-                button.textContent = option;
-                button.onclick = () => handleAnswer(index);
-                optionsEl.appendChild(button);
-            });
-        }
+            initializeGame() {
+                this.createMoneyLadder();
+                this.addEventListeners();
+                this.startGame();
+            }
 
-        function handleAnswer(selectedIndex) {
-            const correctIndex = questions[currentQuestionIndex].correct;
-            const buttons = Array.from(optionsEl.children);
+            createMoneyLadder() {
+                const ladder = document.getElementById('money-ladder');
+                ladder.innerHTML = '';
+                prizeLevels.slice().reverse().forEach(prize => {
+                    const level = document.createElement('div');
+                    level.className = 'prize-level';
+                    level.id = `prize-${prize}`;
+                    level.textContent = `$${prize.toLocaleString()}`;
+                    if (prize === 1000 || prize === 32000) {
+                        level.classList.add('safe');
+                    }
+                    ladder.appendChild(level);
+                });
+            }
 
-            buttons[selectedIndex].classList.add(
-                selectedIndex === correctIndex ? "correct" : "incorrect"
-            );
+            addEventListeners() {
+                document.getElementById('submit-btn').addEventListener('click', () => this.submitAnswer());
+            }
 
-            setTimeout(() => {
-                if (selectedIndex === correctIndex) {
-                    currentQuestionIndex++;
+            startGame() {
+                this.currentQuestion = 0;
+                this.totalPrize = 0;
+                this.safePrize = 0;
+                this.showQuestion();
+            }
 
-                    if (currentQuestionIndex < questions.length) {
-                        loadQuestion();
+            showQuestion() {
+                const question = this.questions[this.currentQuestion];
+                document.getElementById('question').textContent = question.question;
+                
+                const optionsContainer = document.getElementById('options');
+                optionsContainer.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.textContent = `${String.fromCharCode(65 + index)}: ${option}`;
+                    optionElement.addEventListener('click', () => this.selectOption(index));
+                    optionsContainer.appendChild(optionElement);
+                });
+
+                this.updateMoneyLadder();
+                document.getElementById('submit-btn').disabled = true;
+                document.getElementById('message').textContent = '';
+            }
+
+            selectOption(index) {
+                const options = document.querySelectorAll('.option');
+                options.forEach(opt => opt.classList.remove('selected'));
+                options[index].classList.add('selected');
+                this.selectedOption = index;
+                document.getElementById('submit-btn').disabled = false;
+            }
+
+            async submitAnswer() {
+                const question = this.questions[this.currentQuestion];
+                const options = document.querySelectorAll('.option');
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.disabled = true;
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                if (this.selectedOption === question.correct) {
+                    options[this.selectedOption].classList.add('correct');
+                    this.totalPrize = question.prize;
+                    
+                    if (this.currentQuestion === 4) this.safePrize = 1000;
+                    if (this.currentQuestion === 9) this.safePrize = 32000;
+                    
+                    document.getElementById('message').textContent = `Correct! You've won $${question.prize.toLocaleString()}!`;
+                    
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    this.currentQuestion++;
+                    if (this.currentQuestion >= this.questions.length) {
+                        this.gameWon();
                     } else {
-                        questionEl.textContent = "Congratulations! You've won the game!";
-                        optionsEl.innerHTML = "";
-                        document.querySelector(".lifelines").style.display = "none";
+                        this.showQuestion();
                     }
                 } else {
-                    questionEl.textContent = "Game Over! Better luck next time.";
-                    optionsEl.innerHTML = "";
-                    document.querySelector(".lifelines").style.display = "none";
+                    options[this.selectedOption].classList.add('wrong');
+                    options[question.correct].classList.add('correct');
+                    this.gameOver();
                 }
-            }, 2000);
+            }
+
+            updateMoneyLadder() {
+                const levels = document.querySelectorAll('.prize-level');
+                levels.forEach(level => level.classList.remove('current'));
+                
+                const currentPrize = this.questions[this.currentQuestion].prize;
+                document.getElementById(`prize-${currentPrize}`).classList.add('current');
+            }
+
+            gameOver() {
+                document.getElementById('message').textContent = 
+                    `Game Over! You'll take home $${this.safePrize.toLocaleString()}`;
+                document.getElementById('submit-btn').textContent = 'Play Again';
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('submit-btn').addEventListener('click', () => {
+                    location.reload();
+                }, { once: true });
+            }
+
+            gameWon() {
+                document.getElementById('message').textContent = 
+                    `Congratulations! You've won $${this.totalPrize.toLocaleString()}!`;
+                document.getElementById('submit-btn').textContent = 'Play Again';
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('submit-btn').addEventListener('click', () => {
+                    location.reload();
+                }, { once: true });
+            }
         }
 
-        document.getElementById("lifeline5050").onclick = () => {
-            if (lifelinesUsed.fiftyFifty) return;
-            lifelinesUsed.fiftyFifty = true;
-
-            const { correct } = questions[currentQuestionIndex];
-            const buttons = Array.from(optionsEl.children);
-            let hidden = 0;
-
-            buttons.forEach((button, index) => {
-                if (index !== correct && hidden < 2) {
-                    button.style.display = "none";
-                    hidden++;
-                }
-            });
-        };
-
-        document.getElementById("lifelineAudience").onclick = () => {
-            if (lifelinesUsed.audience) return;
-            lifelinesUsed.audience = true;
-            alert("Audience votes: Option " + (questions[currentQuestionIndex].correct + 1));
-        };
-
-        document.getElementById("lifelineSwitch").onclick = () => {
-            if (lifelinesUsed.switch) return;
-            lifelinesUsed.switch = true;
-            currentQuestionIndex = (currentQuestionIndex + 1) % questions.length;
-            loadQuestion();
-        };
-
-        loadQuestion();
+        
+        new QuizGame();
     </script>
 </body>
 </html> -->
 
 <!DOCTYPE html>
+<!-- Previous HTML and CSS remain exactly the same until the script section -->
 <html lang="en">
+<!-- Previous head and style sections remain exactly the same -->
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Who Wants to Be a Millionaire</title>
-    <link rel="stylesheet" href="styles/style.css">
+    <!-- Previous head content remains exactly the same -->
 </head>
 <body>
-    <div class="game-container">
-        <div class="question-container">
-            <h1 id="question">Loading...</h1>
-            <div id="answers">
-                <button class="answer" id="answer1"></button>
-                <button class="answer" id="answer2"></button>
-                <button class="answer" id="answer3"></button>
-                <button class="answer" id="answer4"></button>
-            </div>
-        </div>
-        <div class="lifelines">
-            <button id="fiftyFifty">50:50</button>
-            <button id="switchQuestion">Switch Question</button>
-        </div>
-        <div class="score">
-            <p id="score">Score: 0</p>
-        </div>
-    </div>
-    <script src="scripts/questions.js"></script>
-    <script src="scripts/game.js"></script>
+    <!-- Previous body content remains exactly the same -->
+    <script>
+        // Previous questionDatabase remains exactly the same
+
+        class QuizGame {
+            constructor() {
+                this.currentQuestion = 0;
+                this.totalPrize = 0;
+                this.safePrize = 0;
+                this.selectedOption = null;
+                this.questions = this.generateQuestions();
+                this.initializeGame();
+            }
+
+            generateQuestions() {
+                const questions = [];
+                
+                // Select and shuffle questions from each difficulty level
+                const easyQuestions = this.shuffleArray([...questionDatabase.easy]).slice(0, 5);
+                const mediumQuestions = this.shuffleArray([...questionDatabase.medium]).slice(0, 5);
+                const hardQuestions = this.shuffleArray([...questionDatabase.hard]).slice(0, 3);
+                const expertQuestions = this.shuffleArray([...questionDatabase.expert]).slice(0, 2);
+
+                // Combine questions and add prize levels
+                return [...easyQuestions, ...mediumQuestions, ...hardQuestions, ...expertQuestions]
+                    .map((q, index) => {
+                        // Shuffle options and track the correct answer's new position
+                        const shuffledOptions = this.shuffleArray([...q.options]);
+                        const newCorrectIndex = shuffledOptions.indexOf(q.options[q.correct]);
+                        
+                        return {
+                            question: q.question,
+                            options: shuffledOptions,
+                            correct: newCorrectIndex,
+                            prize: prizeLevels[index]
+                        };
+                    });
+            }
+
+            shuffleArray(array) {
+                for (let i = array.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [array[i], array[j]] = [array[j], array[i]];
+                }
+                return array;
+            }
+
+            reshuffleCurrentOptions() {
+                const currentQ = this.questions[this.currentQuestion];
+                const shuffledOptions = this.shuffleArray([...currentQ.options]);
+                const newCorrectIndex = shuffledOptions.indexOf(currentQ.options[currentQ.correct]);
+                
+                this.questions[this.currentQuestion] = {
+                    ...currentQ,
+                    options: shuffledOptions,
+                    correct: newCorrectIndex
+                };
+            }
+
+            initializeGame() {
+                this.createMoneyLadder();
+                this.addEventListeners();
+                this.startGame();
+            }
+
+            // Previous createMoneyLadder method remains the same
+
+            addEventListeners() {
+                document.getElementById('submit-btn').addEventListener('click', () => this.submitAnswer());
+            }
+
+            startGame() {
+                this.currentQuestion = 0;
+                this.totalPrize = 0;
+                this.safePrize = 0;
+                this.showQuestion();
+            }
+
+            showQuestion() {
+                // Reshuffle options every time we show a question
+                this.reshuffleCurrentOptions();
+                
+                const question = this.questions[this.currentQuestion];
+                document.getElementById('question').textContent = question.question;
+                
+                const optionsContainer = document.getElementById('options');
+                optionsContainer.innerHTML = '';
+                
+                question.options.forEach((option, index) => {
+                    const optionElement = document.createElement('div');
+                    optionElement.className = 'option';
+                    optionElement.textContent = `${String.fromCharCode(65 + index)}: ${option}`;
+                    optionElement.addEventListener('click', () => this.selectOption(index));
+                    optionsContainer.appendChild(optionElement);
+                });
+
+                this.updateMoneyLadder();
+                document.getElementById('submit-btn').disabled = true;
+                document.getElementById('message').textContent = '';
+            }
+
+            // Previous selectOption method remains the same
+
+            async submitAnswer() {
+                const question = this.questions[this.currentQuestion];
+                const options = document.querySelectorAll('.option');
+                const submitBtn = document.getElementById('submit-btn');
+                submitBtn.disabled = true;
+
+                await new Promise(resolve => setTimeout(resolve, 1000));
+                
+                if (this.selectedOption === question.correct) {
+                    options[this.selectedOption].classList.add('correct');
+                    this.totalPrize = question.prize;
+                    
+                    if (this.currentQuestion === 4) this.safePrize = 1000;
+                    if (this.currentQuestion === 9) this.safePrize = 32000;
+                    
+                    document.getElementById('message').textContent = `Correct! You've won $${question.prize.toLocaleString()}!`;
+                    
+                    await new Promise(resolve => setTimeout(resolve, 2000));
+                    
+                    this.currentQuestion++;
+                    if (this.currentQuestion >= this.questions.length) {
+                        this.gameWon();
+                    } else {
+                        this.showQuestion();
+                    }
+                } else {
+                    options[this.selectedOption].classList.add('wrong');
+                    options[question.correct].classList.add('correct');
+                    this.gameOver();
+                }
+            }
+
+            updateMoneyLadder() {
+                const levels = document.querySelectorAll('.prize-level');
+                levels.forEach(level => level.classList.remove('current'));
+                
+                const currentPrize = this.questions[this.currentQuestion].prize;
+                document.getElementById(`prize-${currentPrize}`).classList.add('current');
+            }
+
+            gameOver() {
+                document.getElementById('message').textContent = 
+                    `Game Over! You'll take home $${this.safePrize.toLocaleString()}`;
+                document.getElementById('submit-btn').textContent = 'Play Again';
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('submit-btn').addEventListener('click', () => {
+                    location.reload();
+                }, { once: true });
+            }
+
+            gameWon() {
+                document.getElementById('message').textContent = 
+                    `Congratulations! You've won $${this.totalPrize.toLocaleString()}!`;
+                document.getElementById('submit-btn').textContent = 'Play Again';
+                document.getElementById('submit-btn').disabled = false;
+                document.getElementById('submit-btn').addEventListener('click', () => {
+                    location.reload();
+                }, { once: true });
+            }
+        }
+
+        // Start the game when the page loads
+        new QuizGame();
+    </script>
 </body>
 </html>
-
