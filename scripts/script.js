@@ -199,7 +199,7 @@ class QuizGame {
             if (this.currentQuestion === 4) this.safePrize = 1000;
             if (this.currentQuestion === 9) this.safePrize = 32000;
             
-            document.getElementById('message').textContent = `Correct! You've won $${question.prize.toLocaleString()}!`;
+            document.getElementById('message').textContent = `Correct! You've won💵 $${question.prize.toLocaleString()}💰!`;
             
             await new Promise(resolve => setTimeout(resolve, 2000));
             
@@ -226,7 +226,7 @@ class QuizGame {
 
     gameOver() {
         document.getElementById('message').textContent = 
-            `Game Over! You'll take home $${this.safePrize.toLocaleString()}`;
+            `Game Over! You'll take home 💵 $${this.safePrize.toLocaleString()} 💵`;
         document.getElementById('submit-btn').textContent = 'Play Again';
         document.getElementById('submit-btn').disabled = false;
         document.getElementById('submit-btn').addEventListener('click', () => {
@@ -236,7 +236,7 @@ class QuizGame {
 
     gameWon() {
         document.getElementById('message').textContent = 
-            `Congratulations! You've won $${this.totalPrize.toLocaleString()}!`;
+            `🎉Congratulations! You've won 💵 $${this.totalPrize.toLocaleString()}💰!`;
         document.getElementById('submit-btn').textContent = 'Play Again';
         document.getElementById('submit-btn').disabled = false;
         document.getElementById('submit-btn').addEventListener('click', () => {
