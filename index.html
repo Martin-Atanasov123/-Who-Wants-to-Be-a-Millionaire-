@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game</title>
     <style>
-        /* Previous CSS styles remain the same */
         body {
             margin: 0;
             padding: 0;
@@ -126,6 +125,15 @@
             font-size: 20px;
             color: #ffaa00;
         }
+
+        @media (max-width: 768px) {
+            .game-container {
+                flex-direction: column;
+            }
+            .money-ladder {
+                order: -1;
+            }
+        }
     </style>
 </head>
 <body>
@@ -138,7 +146,6 @@
                 <h2 id="question">Ready to start?</h2>
             </div>
             <div class="options-container" id="options">
-                <!-- Options will be added here -->
             </div>
             <div class="controls">
                 <button id="submit-btn" class="submit-btn" disabled>Submit Answer</button>
@@ -146,132 +153,87 @@
             <div id="message"></div>
         </div>
         <div class="money-ladder" id="money-ladder">
-            <!-- Prize levels will be added here -->
         </div>
     </div>
 
     <script>
-        // Question database organized by difficulty
-        const questionDatabase = {
-            easy: [
-                {
-                    question: "What is the largest planet in our solar system?",
-                    options: ["Mars", "Jupiter", "Saturn", "Neptune"],
-                    correct: 1
-                },
-                {
-                    question: "Which element has the chemical symbol 'Au'?",
-                    options: ["Silver", "Aluminum", "Gold", "Copper"],
-                    correct: 2
-                },
-                {
-                    question: "What is the capital of France?",
-                    options: ["London", "Berlin", "Paris", "Madrid"],
-                    correct: 2
-                },
-                {
-                    question: "How many continents are there?",
-                    options: ["5", "6", "7", "8"],
-                    correct: 2
-                },
-                {
-                    question: "Which planet is closest to the Sun?",
-                    options: ["Venus", "Earth", "Mars", "Mercury"],
-                    correct: 3
-                },
-                {
-                    question: "What is the largest mammal in the world?",
-                    options: ["African Elephant", "Blue Whale", "Giraffe", "Polar Bear"],
-                    correct: 1
-                },
-                {
-                    question: "Which gas do plants absorb from the air?",
-                    options: ["Oxygen", "Carbon Dioxide", "Nitrogen", "Hydrogen"],
-                    correct: 1
-                }
-            ],
-            medium: [
-                {
-                    question: "Who painted the Mona Lisa?",
-                    options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
-                    correct: 1
-                },
-                {
-                    question: "What is the speed of light (approximate)?",
-                    options: ["86,000 mps", "186,000 mps", "286,000 mps", "386,000 mps"],
-                    correct: 1
-                },
-                {
-                    question: "Which element is most abundant in Earth's atmosphere?",
-                    options: ["Oxygen", "Carbon", "Nitrogen", "Hydrogen"],
-                    correct: 2
-                },
-                {
-                    question: "What is the capital of Australia?",
-                    options: ["Sydney", "Melbourne", "Canberra", "Perth"],
-                    correct: 2
-                },
-                {
-                    question: "In which year did World War I begin?",
-                    options: ["1913", "1914", "1915", "1916"],
-                    correct: 1
-                },
-                {
-                    question: "What is the chemical formula for water?",
-                    options: ["CO2", "H2O", "NaCl", "O2"],
-                    correct: 1
-                }
-            ],
-            hard: [
-                {
-                    question: "What is the smallest bone in the human body?",
-                    options: ["Stapes", "Femur", "Radius", "Tibia"],
-                    correct: 0
-                },
-                {
-                    question: "What is the atomic number of Gold?",
-                    options: ["77", "79", "81", "83"],
-                    correct: 1
-                },
-                {
-                    question: "Who wrote 'War and Peace'?",
-                    options: ["Fyodor Dostoevsky", "Leo Tolstoy", "Anton Chekhov", "Ivan Turgenev"],
-                    correct: 1
-                },
-                {
-                    question: "What is the square root of 841?",
-                    options: ["27", "29", "31", "33"],
-                    correct: 1
-                },
-                {
-                    question: "Which year was the first Moon landing?",
-                    options: ["1967", "1968", "1969", "1970"],
-                    correct: 2
-                }
-            ],
-            expert: [
-                {
-                    question: "What is the deepest point in the ocean?",
-                    options: ["Mariana Trench", "Tonga Trench", "Philippine Trench", "Puerto Rico Trench"],
-                    correct: 0
-                },
-                {
-                    question: "Who discovered penicillin?",
-                    options: ["Louis Pasteur", "Alexander Fleming", "Robert Koch", "Joseph Lister"],
-                    correct: 1
-                },
-                {
-                    question: "What is the most abundant element in the universe?",
-                    options: ["Helium", "Hydrogen", "Oxygen", "Carbon"],
-                    correct: 1
-                },
-                {
-                    question: "In quantum physics, what is the name of the principle that states you cannot simultaneously know the position and momentum of a particle?",
-                    options: ["Pauli Exclusion", "Heisenberg Uncertainty", "Wave-Particle Duality", "Quantum Entanglement"],
-                    correct: 1
-                }
-            ]
-        };
+        const questionDatabase = [
+            {
+                question: "What is the largest planet in our solar system?",
+                options: ["Mars", "Jupiter", "Saturn", "Neptune"],
+                correct: 1
+            },
+            {
+                question: "Which element has the chemical symbol 'Au'?",
+                options: ["Silver", "Aluminum", "Gold", "Copper"],
+                correct: 2
+            },
+            {
+                question: "What is the capital of France?",
+                options: ["London", "Berlin", "Paris", "Madrid"],
+                correct: 2
+            },
+            {
+                question: "Which planet is closest to the Sun?",
+                options: ["Venus", "Earth", "Mars", "Mercury"],
+                correct: 3
+            },
+            {
+                question: "Who painted the Mona Lisa?",
+                options: ["Vincent van Gogh", "Leonardo da Vinci", "Pablo Picasso", "Michelangelo"],
+                correct: 1
+            },
+            {
+                question: "What is the chemical formula for water?",
+                options: ["CO2", "H2O", "NaCl", "O2"],
+                correct: 1
+            },
+            {
+                question: "What is the smallest bone in the human body?",
+                options: ["Stapes", "Femur", "Radius", "Tibia"],
+                correct: 0
+            },
+            {
+                question: "Which planet is known as the Red Planet?",
+                options: ["Venus", "Mars", "Mercury", "Jupiter"],
+                correct: 1
+            },
+            {
+                question: "What is the chemical formula for table salt?",
+                options: ["CO2", "H2O", "NaCl", "O2"],
+                correct: 2
+            },
+            {
+                question: "Who wrote 'Romeo and Juliet'?",
+                options: ["Charles Dickens", "William Shakespeare", "Jane Austen", "Mark Twain"],
+                correct: 1
+            },
+            {
+                question: "What is the hardest natural substance on Earth?",
+                options: ["Gold", "Iron", "Diamond", "Platinum"],
+                correct: 2
+            },
+            {
+                question: "Which country has the largest population?",
+                options: ["India", "China", "USA", "Russia"],
+                correct: 0
+            },
+            {
+                question: "What is the square root of 144?",
+                options: ["10", "11", "12", "13"],
+                correct: 2
+            },
+            {
+                question: "What is the deepest point in the ocean?",
+                options: ["Mariana Trench", "Tonga Trench", "Philippine Trench", "Puerto Rico Trench"],
+                correct: 0
+            },
+            {
+                question: "Who discovered penicillin?",
+                options: ["Louis Pasteur", "Alexander Fleming", "Robert Koch", "Joseph Lister"],
+                correct: 1
+            }
+        ];
 
         const prizeLevels = [100, 200, 300, 500, 1000, 2000, 4000, 8000, 16000, 32000, 64000, 125000, 250000, 500000, 1000000];
 
@@ -285,32 +247,40 @@
                 this.initializeGame();
             }
 
-            generateQuestions() {
-                const questions = [];
-                
-                // Select 5 easy questions
-                const easyQuestions = this.shuffleArray([...questionDatabase.easy]).slice(0, 5);
-                // Select 5 medium questions
-                const mediumQuestions = this.shuffleArray([...questionDatabase.medium]).slice(0, 5);
-                // Select 3 hard questions
-                const hardQuestions = this.shuffleArray([...questionDatabase.hard]).slice(0, 3);
-                // Select 2 expert questions
-                const expertQuestions = this.shuffleArray([...questionDatabase.expert]).slice(0, 2);
-
-                // Combine all questions and add prize levels
-                return [...easyQuestions, ...mediumQuestions, ...hardQuestions, ...expertQuestions]
-                    .map((q, index) => ({
-                        ...q,
-                        prize: prizeLevels[index]
-                    }));
+            shuffleArray(array) {
+                const shuffled = [...array];
+                for (let i = shuffled.length - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+                }
+                return shuffled;
             }
 
-            shuffleArray(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
-                return array;
+            generateQuestions() {
+                // Shuffle the entire question database
+                const shuffledQuestions = this.shuffleArray(questionDatabase).slice(0, 15);
+                
+                return shuffledQuestions.map((q, index) => {
+                    // For each question, create pairs of options and their correct status
+                    const optionPairs = q.options.map((opt, i) => ({
+                        text: opt,
+                        isCorrect: i === q.correct
+                    }));
+                    
+                    // Shuffle the options
+                    const shuffledOptions = this.shuffleArray(optionPairs);
+                    
+                    // Find the new index of the correct answer
+                    const newCorrectIndex = shuffledOptions.findIndex(opt => opt.isCorrect);
+                    
+                    // Return the reformatted question with shuffled options
+                    return {
+                        question: q.question,
+                        options: shuffledOptions.map(opt => opt.text),
+                        correct: newCorrectIndex,
+                        prize: prizeLevels[index]
+                    };
+                });
             }
 
             initializeGame() {
