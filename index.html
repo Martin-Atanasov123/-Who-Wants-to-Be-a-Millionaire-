@@ -1,11 +1,11 @@
-<!-- <!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Quiz Game</title>
     <style>
-       
+        /* Previous CSS styles remain the same */
         body {
             margin: 0;
             padding: 0;
@@ -138,7 +138,7 @@
                 <h2 id="question">Ready to start?</h2>
             </div>
             <div class="options-container" id="options">
-                
+                <!-- Options will be added here -->
             </div>
             <div class="controls">
                 <button id="submit-btn" class="submit-btn" disabled>Submit Answer</button>
@@ -146,12 +146,12 @@
             <div id="message"></div>
         </div>
         <div class="money-ladder" id="money-ladder">
-            
+            <!-- Prize levels will be added here -->
         </div>
     </div>
 
     <script>
-        
+        // Question database organized by difficulty
         const questionDatabase = {
             easy: [
                 {
@@ -288,16 +288,16 @@
             generateQuestions() {
                 const questions = [];
                 
-                 Select 5 easy questions
+                // Select 5 easy questions
                 const easyQuestions = this.shuffleArray([...questionDatabase.easy]).slice(0, 5);
-                 Select 5 medium questions
+                // Select 5 medium questions
                 const mediumQuestions = this.shuffleArray([...questionDatabase.medium]).slice(0, 5);
-                Select 3 hard questions
+                // Select 3 hard questions
                 const hardQuestions = this.shuffleArray([...questionDatabase.hard]).slice(0, 3);
-                Select 2 expert questions
+                // Select 2 expert questions
                 const expertQuestions = this.shuffleArray([...questionDatabase.expert]).slice(0, 2);
 
-                 Combine all questions and add prize levels
+                // Combine all questions and add prize levels
                 return [...easyQuestions, ...mediumQuestions, ...hardQuestions, ...expertQuestions]
                     .map((q, index) => ({
                         ...q,
@@ -372,184 +372,6 @@
                 this.selectedOption = index;
                 document.getElementById('submit-btn').disabled = false;
             }
-
-            async submitAnswer() {
-                const question = this.questions[this.currentQuestion];
-                const options = document.querySelectorAll('.option');
-                const submitBtn = document.getElementById('submit-btn');
-                submitBtn.disabled = true;
-
-                await new Promise(resolve => setTimeout(resolve, 1000));
-                
-                if (this.selectedOption === question.correct) {
-                    options[this.selectedOption].classList.add('correct');
-                    this.totalPrize = question.prize;
-                    
-                    if (this.currentQuestion === 4) this.safePrize = 1000;
-                    if (this.currentQuestion === 9) this.safePrize = 32000;
-                    
-                    document.getElementById('message').textContent = `Correct! You've won $${question.prize.toLocaleString()}!`;
-                    
-                    await new Promise(resolve => setTimeout(resolve, 2000));
-                    
-                    this.currentQuestion++;
-                    if (this.currentQuestion >= this.questions.length) {
-                        this.gameWon();
-                    } else {
-                        this.showQuestion();
-                    }
-                } else {
-                    options[this.selectedOption].classList.add('wrong');
-                    options[question.correct].classList.add('correct');
-                    this.gameOver();
-                }
-            }
-
-            updateMoneyLadder() {
-                const levels = document.querySelectorAll('.prize-level');
-                levels.forEach(level => level.classList.remove('current'));
-                
-                const currentPrize = this.questions[this.currentQuestion].prize;
-                document.getElementById(`prize-${currentPrize}`).classList.add('current');
-            }
-
-            gameOver() {
-                document.getElementById('message').textContent = 
-                    `Game Over! You'll take home $${this.safePrize.toLocaleString()}`;
-                document.getElementById('submit-btn').textContent = 'Play Again';
-                document.getElementById('submit-btn').disabled = false;
-                document.getElementById('submit-btn').addEventListener('click', () => {
-                    location.reload();
-                }, { once: true });
-            }
-
-            gameWon() {
-                document.getElementById('message').textContent = 
-                    `Congratulations! You've won $${this.totalPrize.toLocaleString()}!`;
-                document.getElementById('submit-btn').textContent = 'Play Again';
-                document.getElementById('submit-btn').disabled = false;
-                document.getElementById('submit-btn').addEventListener('click', () => {
-                    location.reload();
-                }, { once: true });
-            }
-        }
-
-        
-        new QuizGame();
-    </script>
-</body>
-</html> -->
-
-<!DOCTYPE html>
-<!-- Previous HTML and CSS remain exactly the same until the script section -->
-<html lang="en">
-<!-- Previous head and style sections remain exactly the same -->
-<head>
-    <!-- Previous head content remains exactly the same -->
-</head>
-<body>
-    <!-- Previous body content remains exactly the same -->
-    <script>
-        // Previous questionDatabase remains exactly the same
-
-        class QuizGame {
-            constructor() {
-                this.currentQuestion = 0;
-                this.totalPrize = 0;
-                this.safePrize = 0;
-                this.selectedOption = null;
-                this.questions = this.generateQuestions();
-                this.initializeGame();
-            }
-
-            generateQuestions() {
-                const questions = [];
-                
-                // Select and shuffle questions from each difficulty level
-                const easyQuestions = this.shuffleArray([...questionDatabase.easy]).slice(0, 5);
-                const mediumQuestions = this.shuffleArray([...questionDatabase.medium]).slice(0, 5);
-                const hardQuestions = this.shuffleArray([...questionDatabase.hard]).slice(0, 3);
-                const expertQuestions = this.shuffleArray([...questionDatabase.expert]).slice(0, 2);
-
-                // Combine questions and add prize levels
-                return [...easyQuestions, ...mediumQuestions, ...hardQuestions, ...expertQuestions]
-                    .map((q, index) => {
-                        // Shuffle options and track the correct answer's new position
-                        const shuffledOptions = this.shuffleArray([...q.options]);
-                        const newCorrectIndex = shuffledOptions.indexOf(q.options[q.correct]);
-                        
-                        return {
-                            question: q.question,
-                            options: shuffledOptions,
-                            correct: newCorrectIndex,
-                            prize: prizeLevels[index]
-                        };
-                    });
-            }
-
-            shuffleArray(array) {
-                for (let i = array.length - 1; i > 0; i--) {
-                    const j = Math.floor(Math.random() * (i + 1));
-                    [array[i], array[j]] = [array[j], array[i]];
-                }
-                return array;
-            }
-
-            reshuffleCurrentOptions() {
-                const currentQ = this.questions[this.currentQuestion];
-                const shuffledOptions = this.shuffleArray([...currentQ.options]);
-                const newCorrectIndex = shuffledOptions.indexOf(currentQ.options[currentQ.correct]);
-                
-                this.questions[this.currentQuestion] = {
-                    ...currentQ,
-                    options: shuffledOptions,
-                    correct: newCorrectIndex
-                };
-            }
-
-            initializeGame() {
-                this.createMoneyLadder();
-                this.addEventListeners();
-                this.startGame();
-            }
-
-            // Previous createMoneyLadder method remains the same
-
-            addEventListeners() {
-                document.getElementById('submit-btn').addEventListener('click', () => this.submitAnswer());
-            }
-
-            startGame() {
-                this.currentQuestion = 0;
-                this.totalPrize = 0;
-                this.safePrize = 0;
-                this.showQuestion();
-            }
-
-            showQuestion() {
-                // Reshuffle options every time we show a question
-                this.reshuffleCurrentOptions();
-                
-                const question = this.questions[this.currentQuestion];
-                document.getElementById('question').textContent = question.question;
-                
-                const optionsContainer = document.getElementById('options');
-                optionsContainer.innerHTML = '';
-                
-                question.options.forEach((option, index) => {
-                    const optionElement = document.createElement('div');
-                    optionElement.className = 'option';
-                    optionElement.textContent = `${String.fromCharCode(65 + index)}: ${option}`;
-                    optionElement.addEventListener('click', () => this.selectOption(index));
-                    optionsContainer.appendChild(optionElement);
-                });
-
-                this.updateMoneyLadder();
-                document.getElementById('submit-btn').disabled = true;
-                document.getElementById('message').textContent = '';
-            }
-
-            // Previous selectOption method remains the same
 
             async submitAnswer() {
                 const question = this.questions[this.currentQuestion];
