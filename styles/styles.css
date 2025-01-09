@@ -1,45 +1,129 @@
 body {
+    margin: 0;
+    padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #000;
-    color: #fff;
+    background-color: #000033;
+    color: white;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.header {
     text-align: center;
+    padding: 20px;
+    background-color: #000066;
 }
 
 .game-container {
-    margin: 50px auto;
-    width: 80%;
-    max-width: 600px;
+    display: flex;
+    flex: 1;
 }
 
-.question-container {
+.main-game {
+    flex: 3;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.question-box {
+    background-color: #000066;
+    padding: 20px;
+    border-radius: 10px;
     margin-bottom: 20px;
-}
-
-.answer {
-    display: block;
-    margin: 10px auto;
-    padding: 10px;
     width: 80%;
-    background-color: #1a73e8;
-    border: none;
-    color: white;
-    font-size: 1.2em;
-    cursor: pointer;
+    text-align: center;
 }
 
-.answer:hover {
-    background-color: #155ab4;
+.options-container {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+    width: 80%;
 }
 
-.lifelines button {
-    margin: 10px;
+.option {
+    background-color: #000066;
     padding: 10px;
-    background-color: #444;
-    color: #fff;
-    border: none;
+    border: 2px solid #4444ff;
+    border-radius: 5px;
     cursor: pointer;
+    transition: background-color 0.3s;
 }
 
-.lifelines button:hover {
-    background-color: #666;
+.option:hover {
+    background-color: #0000aa;
+}
+
+.option.selected {
+    background-color: #ffaa00;
+}
+
+.option.correct {
+    background-color: #00aa00;
+}
+
+.option.wrong {
+    background-color: #aa0000;
+}
+
+.money-ladder {
+    flex: 1;
+    background-color: #000066;
+    padding: 20px;
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 5px;
+}
+
+.prize-level {
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+.prize-level.current {
+    background-color: #ffaa00;
+    color: black;
+}
+
+.prize-level.safe {
+    background-color: #444444;
+}
+
+.controls {
+    margin-top: 20px;
+    text-align: center;
+}
+
+.submit-btn {
+    background-color: #ffaa00;
+    color: black;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.submit-btn:disabled {
+    background-color: #666666;
+    cursor: not-allowed;
+}
+
+#message {
+    margin-top: 20px;
+    font-size: 20px;
+    color: #ffaa00;
+}
+
+@media (max-width: 768px) {
+    .game-container {
+        flex-direction: column;
+    }
+    .money-ladder {
+        order: -1;
+    }
 }
