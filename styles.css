@@ -2,7 +2,8 @@ body {
     margin: 0;
     padding: 0;
     font-family: Arial, sans-serif;
-    background-color: #02023b;
+    background-color: #000066;
+
 
     color: white;
     height: 100vh;
@@ -18,8 +19,13 @@ body {
 }
 
 .game-container {
-    display: flex;;
+    display: flex;
+    align-self: center;
     flex: 1;
+    width: 90%;
+    border-radius: 1em;
+    background-color: #02023b;
+    margin: 3em;
 }
 
 .main-game {
@@ -34,7 +40,7 @@ body {
 .question-box {
     background-color: #000066;
     border: 1px solid #c7c7ff;
-    
+
     padding: 10px;
     border-radius: 10px;
     margin-bottom: 20px;
@@ -78,17 +84,22 @@ body {
 }
 
 .money-ladder {
+    display: flex;
     flex: 1;
     background-color: #000066;
     padding: 20px;
-    display: flex;
-    flex-direction: column-reverse;
+    flex-direction: row-reverse;
+
     gap: 5px;
+    margin-top: 5em;
+    border-radius: 1em;
 }
 
 .prize-level {
+    display: flex;
     padding: 5px 10px;
     border-radius: 25px;
+    align-self: center;
 }
 
 .prize-level.current {
@@ -108,15 +119,16 @@ body {
 .submit-btn {
     background-color: #ffaa00;
     color: black;
-    border: none;
+    border: 2px solid black;
     padding: 10px 20px;
     border-radius: 5px;
     cursor: pointer;
-    font-size: 16px;
+    font-size: x-large;
+    font-weight: bold;
 }
 
 .submit-btn:disabled {
-    background-color: #666666;
+    background-color: #928e8e;
     cursor: not-allowed;
 }
 
@@ -130,6 +142,7 @@ body {
     .game-container {
         flex-direction: column;
     }
+
     .money-ladder {
         order: -1;
     }
