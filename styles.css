@@ -53,7 +53,9 @@ body {
     background-color: #000066;
     padding: 10px;
     font-size: x-large;
-    border: 2px solid #4444ff;
+
+    border: 1px solid #c7c7ff;
+
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s;
