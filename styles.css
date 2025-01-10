@@ -14,17 +14,21 @@ body {
 .header {
     text-align: center;
     font-size: x-large;
-    padding: 20px;
+    padding: 5px;
     background-color: #000066;
+    background-color: #0e0ea0;
+    border: 10px solid #000066 ;
+    border-radius: 1em;
+    margin: 2em;
 }
 
 .game-container {
     display: flex;
     align-self: center;
     flex: 1;
-    width: 90%;
+    width: 85%;
     border-radius: 1em;
-    background-color: #02023b;
+    background-color: #0e0ea0;
     margin: 3em;
 }
 
@@ -97,6 +101,8 @@ body {
 
 .prize-level {
     display: flex;
+    flex-wrap: wrap;
+
     padding: 5px 10px;
     border-radius: 25px;
     align-self: center;
@@ -139,11 +145,18 @@ body {
 }
 
 @media (max-width: 768px) {
+    .header{
+        font-size: large;
+    }
     .game-container {
         flex-direction: column;
     }
 
     .money-ladder {
         order: -1;
+    }
+    .prize-level {
+        display: flex;
+        
     }
 }
